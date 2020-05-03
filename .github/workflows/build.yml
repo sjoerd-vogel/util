@@ -5,8 +5,6 @@ env:
   JAVA_OPTS: "-Dsbt.log.noformat=true"
   SKIP_FLAKY_TRAVIS: "true"
 defaults:
-  matrix:
-    java: [openjdk@1.8, openjdk@1.11]
   run:
       shell: bash
 on:
@@ -19,6 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        java: [openjdk@1.8, openjdk@1.11]
         scala: [2.12.8]
     steps:
       - uses: actions/checkout@v2
@@ -68,6 +67,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        java: [openjdk@1.8, openjdk@1.11]
         scala: [2.11.12, 2.13.1]
     steps:
       - uses: actions/checkout@v2
