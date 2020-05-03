@@ -6,7 +6,7 @@ env:
   SKIP_FLAKY_TRAVIS: "true"
 defaults:
   run:
-      shell: bash
+    shell: bash
 on:
   push:
     branches: [ ccoco/WorkflowBuild ]
@@ -30,19 +30,19 @@ jobs:
       - name: cache/maven
         uses: actions/cache@v1
         with:
-          path: ~/.m2/repository
+          path: $HOME/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: cache/ivy2
         uses: actions/cache@v1
         with:
-          path: ~/.ivy2/cache
+          path: $HOME/.ivy2/cache
           key: ${{ runner.os }}-${{ matrix.java }}-sbt-ivy-cache-${{ hashFiles('**/build.sbt') }}
       - name: cache/sbt
         uses: actions/cache@v1
         with:
-          path: ~/.sbt
+          path: $HOME/.sbt
           key: ${{ runner.os }}-${{ matrix.java }}-sbt-${{ hashFiles('**/build.sbt') }}
       - name: unset/sbt-opts # default $SBT_OPTS is irrelevant to sbt launcher
         run: |
@@ -80,19 +80,19 @@ jobs:
       - name: cache/maven
         uses: actions/cache@v1
         with:
-          path: ~/.m2/repository
+          path: $HOME/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: cache/ivy2
         uses: actions/cache@v1
         with:
-          path: ~/.ivy2/cache
+          path: $HOME/.ivy2/cache
           key: ${{ runner.os }}-${{ matrix.java }}-sbt-ivy-cache-${{ hashFiles('**/build.sbt') }}
       - name: cache/sbt
         uses: actions/cache@v1
         with:
-          path: ~/.sbt
+          path: $HOME/.sbt
           key: ${{ runner.os }}-${{ matrix.java }}-sbt-${{ hashFiles('**/build.sbt') }}
       - name: unset/sbt-opts # default $SBT_OPTS is irrelevant to sbt launcher
         run: |
@@ -100,21 +100,3 @@ jobs:
       - name: test
         run: |
           ./sbt ++${{ matrix.scala }} clean test
-      - name: Notify slack success
-        if: success()
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-        uses: voxmedia/github-action-slack-notify-build@v1
-        with:
-          channel: app-alerts
-          status: SUCCESS
-          color: good
-      - name: Notify slack fail
-        if: failure()
-        env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-        uses: voxmedia/github-action-slack-notify-build@v1
-        with:
-          channel: app-alerts
-          status: FAILED
-          color: danger
