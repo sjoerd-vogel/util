@@ -12,6 +12,14 @@ on:
     branches: [ ccoco/WorkflowBuild ]
 
 jobs:
+  echo:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+    - run: |
+        echo "$HOME"
+        env
   test-with-coverage: # generate coverage report for 2.12.8 on jdk1.8
     runs-on: ubuntu-latest
     strategy:
