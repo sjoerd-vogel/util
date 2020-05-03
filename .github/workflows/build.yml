@@ -38,19 +38,19 @@ jobs:
       - name: cache/maven
         uses: actions/cache@v1
         with:
-          path: ~/.m2/repository
+          path: ${{ env.home }}/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: cache/ivy2
         uses: actions/cache@v1
         with:
-          path: ~/.ivy2/cache
+          path: ${{ env.home }}/.ivy2/cache
           key: ${{ runner.os }}-${{ matrix.java }}-sbt-ivy-cache-${{ hashFiles('**/build.sbt') }}
       - name: cache/sbt
         uses: actions/cache@v1
         with:
-          path: ~/.sbt
+          path: ${{ env.home }}/.sbt
           key: ${{ runner.os }}-${{ matrix.java }}-sbt-${{ hashFiles('**/build.sbt') }}
       - name: unset/sbt-opts # default $SBT_OPTS is irrelevant to sbt launcher
         run: |
@@ -88,19 +88,19 @@ jobs:
       - name: cache/maven
         uses: actions/cache@v1
         with:
-          path: ~/.m2/repository
+          path: ${{ env.home }}/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: cache/ivy2
         uses: actions/cache@v1
         with:
-          path: ~/.ivy2/cache
+          path: ${{ env.home }}/.ivy2/cache
           key: ${{ runner.os }}-${{ matrix.java }}-sbt-ivy-cache-${{ hashFiles('**/build.sbt') }}
       - name: cache/sbt
         uses: actions/cache@v1
         with:
-          path: ~/.sbt
+          path: ${{ env.home }}/.sbt
           key: ${{ runner.os }}-${{ matrix.java }}-sbt-${{ hashFiles('**/build.sbt') }}
       - name: unset/sbt-opts # default $SBT_OPTS is irrelevant to sbt launcher
         run: |
