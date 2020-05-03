@@ -1,17 +1,17 @@
 # twitter/util sbt build/test with coverage
 name: sbt-build
 
+env:
+  JAVA_OPTS: "-Dsbt.log.noformat=true"
+  SKIP_FLAKY_TRAVIS: "true"
+defaults:
+  matrix:
+    java: [openjdk@1.8, openjdk@1.11]
+  run:
+      shell: bash
 on:
   push:
     branches: [ ccoco/WorkflowBuild ]
-  env:
-    JAVA_OPTS: "-Dsbt.log.noformat=true"
-    SKIP_FLAKY_TRAVIS: "true"
-  defaults:
-    matrix:
-      java: [openjdk@1.8, openjdk@1.11]
-    run:
-      shell: bash
 
 jobs:
   test-with-coverage: # generate coverage report for 2.12.8 on jdk1.8
