@@ -1,18 +1,24 @@
+# twitter/util sbt build/test with coverage
 name: sbt-build
 
 on:
   push:
     branches: [ ccoco/WorkflowBuild ]
+  env:
+    JAVA_OPTS: "-Dsbt.log.noformat=true"
+    SKIP_FLAKY_TRAVIS: "true"
+  defaults:
+    matrix:
+      java: [openjdk@1.8, openjdk@1.11]
+    run:
+      shell: bash
 
 jobs:
   test-with-coverage: # generate coverage report for 2.12.8 on jdk1.8
     runs-on: ubuntu-latest
-    env:
-      JAVA_OPTS: "-Dsbt.log.noformat=true"
     strategy:
       fail-fast: false
       matrix:
-        java: [openjdk@1.8, openjdk@1.11]
         scala: [2.12.8]
     steps:
       - uses: actions/checkout@v2
@@ -22,23 +28,36 @@ jobs:
       - uses: olafurpg/setup-scala@v7
         with:
           java-version: ${{ matrix.java }}
+      - name: cache/maven
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: cache/ivy2
+        uses: actions/cache@v1
+        with:
+          path: ~/.ivy2/cache
+          key: ${{ runner.os }}-${{ matrix.java }}-sbt-ivy-cache-${{ hashFiles('**/build.sbt') }}
+      - name: cache/sbt
+        uses: actions/cache@v1
+        with:
+          path: ~/.sbt
+          key: ${{ runner.os }}-${{ matrix.java }}-sbt-${{ hashFiles('**/build.sbt') }}
       - name: unset/sbt-opts # default $SBT_OPTS is irrelevant to sbt launcher
-        shell: bash
         run: |
           unset SBT_OPTS
       - name: test
         if: ${{ matrix.java != 'openjdk@1.8' }}
-        shell: bash
         run: |
           ./sbt ++${{ matrix.scala }} clean test
       - name: test/with-coverage
         if: ${{ matrix.java == 'openjdk@1.8' }}
-        shell: bash
         run: |
           ./sbt ++${{ matrix.scala }} clean coverage test coverageReport
       - name: test/coverage-report/generate
         if: ${{ matrix.java == 'openjdk@1.8' }}
-        shell: bash
         run: |
           ./sbt ++${{ matrix.scala }} coverageAggregate
       - name: test/coverage-report/upload
@@ -46,12 +65,9 @@ jobs:
         uses: codecov/codecov-action@v1
   test:
     runs-on: ubuntu-latest
-    env:
-      JAVA_OPTS: "-Dsbt.log.noformat=true"
     strategy:
       fail-fast: false
       matrix:
-        java: [openjdk@1.8, openjdk@1.11]
         scala: [2.11.12, 2.13.1]
     steps:
       - uses: actions/checkout@v2
@@ -79,10 +95,8 @@ jobs:
           path: ~/.sbt
           key: ${{ runner.os }}-${{ matrix.java }}-sbt-${{ hashFiles('**/build.sbt') }}
       - name: unset/sbt-opts # default $SBT_OPTS is irrelevant to sbt launcher
-        shell: bash
         run: |
           unset SBT_OPTS
       - name: test
-        shell: bash
         run: |
           ./sbt ++${{ matrix.scala }} clean test
