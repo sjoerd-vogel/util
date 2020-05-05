@@ -50,6 +50,7 @@ jobs:
           path: ~/.sbt
           key: ${{ runner.os }}-${{ matrix.java }}-sbt-${{ hashFiles('**/build.sbt') }}
       - name: test
+        if: ${{ matrix.scala != '2.12.8' && matrix.java != 'openjdk@1.8' }}
         run: |
           ./sbt ++${{ matrix.scala }} clean test
       - name: test/with-coverage # generate coverage report for 2.12.8 on jdk1.8
