@@ -24,6 +24,8 @@ jobs:
             scala: 2.12.8
             coverage: true
     steps:
+      - run: |
+          echo "${{ matrix.coverage }}"
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
         with:
