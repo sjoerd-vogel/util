@@ -71,6 +71,7 @@ jobs:
         run: |
           ./sbt ++${{ matrix.scala }} coverageAggregate
       - name: test/coverage-report/save-results
+        if: ${{ matrix.coverage }}
         uses: actions/upload-artifact@v2
         with:
           name: coverage-report
