@@ -88,4 +88,4 @@ jobs:
       - name: test/coverage-report/upload
         uses: codecov/codecov-action@v1
         with:
-          file: ${{ github.workspace }}/coverage-reports
+          file: ${{ github.workspace }}/coverage-reports/**/target/scala-2.12/*-report/*.xml
