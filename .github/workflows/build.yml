@@ -83,6 +83,9 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: coverage-report
+          path: ${{ github.workspace }}/coverage-reports
       - name: test/coverage-report/upload
         if: ${{ matrix.coverage == 'true' && success() }}
         uses: codecov/codecov-action@v1
+        with:
+          file: ${{ github.workspace }}/coverage-reports
