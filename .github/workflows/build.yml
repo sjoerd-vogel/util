@@ -55,19 +55,19 @@ jobs:
           path: ~/.sbt
           key: ${{ runner.os }}-${{ matrix.java }}-sbt-${{ hashFiles('**/build.sbt') }}
       - name: test
-        if: ${{ matrix.coverage == 'false' }}
+        if: ${{ !matrix.coverage }}
         run: |
           ./sbt ++${{ matrix.scala }} clean test
       - name: test/with-coverage
-        if: ${{ matrix.coverage == 'true' }}
+        if: ${{ matrix.coverage }}
         run: |
           ./sbt ++${{ matrix.scala }} clean coverage test coverageReport
       - name: test/coverage-report/generate
-        if: ${{ matrix.coverage == 'true' }}
+        if: ${{ matrix.coverage }}
         run: |
           ./sbt ++${{ matrix.scala }} coverageAggregate
       - name: test/coverage-report/generate
-        if: ${{ matrix.coverage == 'true' }}
+        if: ${{ matrix.coverage }}
         run: |
           ./sbt ++${{ matrix.scala }} coverageAggregate
       - name: test/coverage-report/save-results
