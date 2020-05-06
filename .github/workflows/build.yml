@@ -86,7 +86,6 @@ jobs:
           name: coverage-report
           path: ${{ github.workspace }}/coverage-reports
       - name: test/coverage-report/upload
-        if: ${{ matrix.coverage == 'true' && success() }}
         uses: codecov/codecov-action@v1
         with:
-          file: /home/runner/work/util/util/coverage-reports/**/target/scala-2.12/*-report/*.xml
+          file: ${{ github.workspace }}/coverage-reports
