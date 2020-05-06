@@ -89,4 +89,4 @@ jobs:
         if: ${{ matrix.coverage == 'true' && success() }}
         uses: codecov/codecov-action@v1
         with:
-          file: ${{ github.workspace }}/coverage-reports
+          file: ${{ github.workspace }}/coverage-reports/**/target/scala-2.12/*-report/*.xml
