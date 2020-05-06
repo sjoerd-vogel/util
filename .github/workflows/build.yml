@@ -74,7 +74,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: coverage-report
-          path: ${{ github.workspace }}/util/**/target/scala-2.12/*-report/*.xml
+          path: ./**/target/scala-2.12/*-report/*.xml
   coverage:
     runs-on: ubuntu-latest
     steps:
